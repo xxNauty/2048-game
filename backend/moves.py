@@ -1,4 +1,4 @@
-import logic
+import backend.logic as logic
 
 def move_left(grid):
     new_grid, changed1 = logic.compress(grid)
