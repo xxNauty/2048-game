@@ -1,3 +1,9 @@
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
 def get_current_state(mat):
     max_val = 0
     for i in range(4):
@@ -5,7 +11,7 @@ def get_current_state(mat):
             field_val = mat[i][j]
             if field_val > max_val:
                 max_val = field_val
-            if field_val == 2048:
+            if field_val == int(os.getenv("END_OF_GAME_VALUE")):
                 return 'WON', max_val
 
     for i in range(4):
@@ -26,4 +32,4 @@ def get_current_state(mat):
         if mat[i][3] == mat[i + 1][3]:
             return 'GAME NOT OVER', None
 
-    return 'LOST', max
+    return 'LOST', max_val

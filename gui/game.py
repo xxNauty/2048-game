@@ -1,9 +1,9 @@
-# import game_history
 import tkinter as tk
 
 import backend.logic as logic
 import backend.moves as moves
 import backend.state as state
+import backend.game_history as game_history
 
 COLORS = {
     0: ("#cdc1b4", "#776e65"),
@@ -26,9 +26,10 @@ count_left = 0
 count_right = 0
 
 class Game(tk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, root_window=None):
         super().__init__(master)
         # self.master.title("2048 Game")
+        self.root_window = root_window
         self.grid()
         self.size = 4
         self.grid_cells = []
@@ -108,13 +109,13 @@ class Game(tk.Frame):
         self.update_grid()
 
         if status != "GAME NOT OVER":
-            # new_records = game_history.generate_report(count_up, count_down, count_left, count_right, status, max_value_on_gameboard)
-            status_text = "You win!"
-            # if new_records:
-            #     status_text += "\n\nNEW RECORDS MADE:\n"
-            #     for record, value_of_record in new_records:
-            #         status_text += record + ":" + str(value_of_record) + "\n"
-            self.status_label.config(text=status_text)
-            self.master.unbind("<Key>")
+            new_records = game_history.generate_report(count_up, count_down, count_left, count_right, status, max_value_on_gameboard)
+            if new_records:
+                status += "\n\nNEW RECORDS MADE:\n"
+                for record, value_of_record in new_records:
+                    status += record + ":" + str(value_of_record) + "\n"
+            self.status_label.config(text=status)
+            self.root_window.unbind("<Key>")
         else:
             self.status_label.config(text="")
+        return
