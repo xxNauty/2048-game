@@ -12,7 +12,7 @@ def get_current_state(mat):
             if field_val > max_val:
                 max_val = field_val
             if field_val == int(os.getenv("END_OF_GAME_VALUE")):
-                return 'WON', max_val
+                return 'WIN', max_val
 
     for i in range(4):
         for j in range(4):

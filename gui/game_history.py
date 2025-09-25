@@ -89,7 +89,6 @@ class GameHistory(tk.Frame):
             text_widget.pack()
 
 
-
     @staticmethod
     def clear_window(root: tk.Tk):
         for widget in root.winfo_children():

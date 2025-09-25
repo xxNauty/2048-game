@@ -75,12 +75,13 @@ end_button = tk.Button(
     width=10,
     command=quit_game
 )
+
 end_button.pack(pady=10)
-
 records_frame = tk.Frame(container)
-records_frame.grid(row=0, column=0, sticky="nsew")
 
+records_frame.grid(row=0, column=0, sticky="nsew")
 results_frame = tk.Frame(container)
+
 results_frame.grid(row=0, column=0, sticky="nsew")
 
 if __name__ == "__main__":

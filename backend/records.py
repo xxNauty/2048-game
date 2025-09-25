@@ -77,6 +77,18 @@ def update_records(game_identifier, count_up, count_down, count_left, count_righ
                 data['moves_right']['updated_by'] = game_identifier
                 updated.append(("moves_right", count_right))
 
+            if data['total_moves']['record'] > total_moves:
+                data['total_moves']['record'] = total_moves
+                data['total_moves']['last_update'] = current_date
+                data['total_moves']['updated_by'] = game_identifier
+                updated.append(("total_moves", total_moves))
+
+            if data['max_value_on_gameboard']['record'] < max_value_on_gameboard:
+                data['max_value_on_gameboard']['record'] = max_value_on_gameboard
+                data['max_value_on_gameboard']['last_update'] = current_date
+                data['max_value_on_gameboard']['updated_by'] = game_identifier
+                updated.append(("max_value_on_gameboard", max_value_on_gameboard))
+
             if updated:
                 data['last_update'] = current_date
 
