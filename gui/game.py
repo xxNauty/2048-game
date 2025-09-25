@@ -5,6 +5,8 @@ import backend.moves as moves
 import backend.state as state
 import backend.game_history as game_history
 
+import gui.game_history as game_history_gui
+
 COLORS = {
     0: ("#cdc1b4", "#776e65"),
     2: ("#eee4da", "#776e65"),
@@ -28,17 +30,13 @@ count_right = 0
 class Game(tk.Frame):
     def __init__(self, master=None, root_window=None):
         super().__init__(master)
-        # self.master.title("2048 Game")
         self.root_window = root_window
         self.grid()
         self.size = 4
         self.grid_cells = []
         self.init_grid()
-        self.status_label = tk.Label(self, text="", font=("Verdana", 14))
-        self.status_label.grid(row=self.size, column=0, columnspan=self.size)
-        self.init_game()
-        # self.master.bind("<Key>", self.key_down)
-        # self.master.geometry("440x600")
+        self.mat = logic.start_game()
+        self.update_grid()
 
     def init_grid(self):
         background = tk.Frame(self, bg="#bbada0")
@@ -62,17 +60,12 @@ class Game(tk.Frame):
                     font=("Verdana", 24, "bold"),
                     width=4,
                     height=2,
-                    relief=tk.RAISED,
+                    relief="raised",
                     borderwidth=5
                 )
                 t.grid()
                 row.append(t)
             self.grid_cells.append(row)
-
-    def init_game(self):
-        self.mat = logic.start_game()
-        self.update_grid()
-        self.status_label.config(text="")
 
     def update_grid(self):
         for i in range(self.size):
@@ -110,12 +103,58 @@ class Game(tk.Frame):
 
         if status != "GAME NOT OVER":
             new_records = game_history.generate_report(count_up, count_down, count_left, count_right, status, max_value_on_gameboard)
-            if new_records:
-                status += "\n\nNEW RECORDS MADE:\n"
-                for record, value_of_record in new_records:
-                    status += record + ":" + str(value_of_record) + "\n"
-            self.status_label.config(text=status)
+            self.end_game_window(status, new_records)
             self.root_window.unbind("<Key>")
-        else:
-            self.status_label.config(text="")
-        return
+
+
+    def end_game_window(self, status, records):
+        window = tk.Tk()
+        window.title("Game over")
+        window.geometry("440x600")
+        status_formatted = ""
+        if status == "WIN":
+            status_formatted = "You win!"
+        elif status == "LOST":
+            status_formatted = "You lost!"
+
+
+        game_result_status = tk.Label(
+            master=window,
+            text=status_formatted,
+            font=("Verdana", 20, "bold"),
+            justify="center"
+        )
+        game_result_status.pack(pady=5)
+
+        if records:
+            records_label = tk.Label(
+                master=window,
+                text="New records made!",
+                font=("Verdana", 16, "normal"),
+                justify="center"
+            )
+            records_label.pack(pady=5)
+
+        quit_button = tk.Button(
+            master=window,
+            text="Quit game",
+            font=("Verdana", 20, "normal"),
+            justify="center",
+            width=10,
+            command=lambda: self.quit_game(window)
+        )
+        quit_button.pack(pady=10)
+
+        view_details_button = tk.Button(
+            master=window,
+            text="Statistics",
+            font=("Verdana", 20, "normal"),
+            justify="center",
+            width=10,
+            state="disabled",
+        )
+        view_details_button.pack()
+
+    def quit_game(self, window):
+        window.destroy()
+        self.root_window.destroy()
