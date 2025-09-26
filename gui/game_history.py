@@ -5,29 +5,25 @@ import json
 GAME_HISTORY_FILE = "logs/"
 
 class GameHistory(tk.Frame):
-    def __init__(self, master = None):
+    def __init__(self, master = None, main_menu_frame = None):
         super().__init__(master)
+        self.main_menu_frame = main_menu_frame
         self.get_data()
 
     def get_data(self):
-        background = tk.Frame(
-            self,
-            bg="#bbada0",
-        )
+        background = tk.Frame(self)
         background.pack(fill="both", expand=True)
 
         header = tk.Label(
             master=background,
             text="Last 10 games played",
-            font=("Verdana", 14, "bold"),
-            bg="#bbada0",
+            font=("Verdana", 20, "bold"),
             justify="center",
         )
         header.pack(pady=5)
 
         games = tk.Frame(
             master=background,
-            bg="#bbada0",
         )
         games.pack(pady=5)
 
@@ -42,9 +38,8 @@ class GameHistory(tk.Frame):
             no_games_label = tk.Label(
                 master=games,
                 text="No game history available.",
-                bg="#bbada0",
                 justify="center",
-                font=("Verdana", 12, "normal")
+                font=("Verdana", 16, "normal")
             )
             no_games_label.pack(pady=10)
             return
@@ -53,16 +48,20 @@ class GameHistory(tk.Frame):
             cell = tk.Button(
                 master=games,
                 text=file[:-5],
-                bg="#9f9388",
                 justify="center",
-                font=("Verdana", 12, "normal"),
-                width=16,
-                height=1,
-                relief="raised",
-                borderwidth=5,
+                font=("Verdana", 16, "normal"),
+                width=19,
                 command=lambda f=file: self.get_details(f)
             )
             cell.grid(pady=5, padx=5)
+
+        return_button = tk.Button(
+            master=background,
+            text="Return to Main menu",
+            font=("Verdana", 20, "normal"),
+            command=lambda: self.main_menu_frame.tkraise()
+        )
+        return_button.pack()
 
     def get_details(self, filename):
         with open(GAME_HISTORY_FILE + filename) as file:

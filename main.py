@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from gui import game, game_history, main_menu, records, results
+from gui import game, game_history, records, results
 
 root = tk.Tk()
 root.title("2048 game")
@@ -8,6 +8,9 @@ root.geometry("440x600")
 
 container = tk.Frame(root)
 container.pack(fill="both", expand=True)
+
+main_menu_frame = tk.Frame(container)
+main_menu_frame.grid(row=0, column=0, sticky="nsew")
 
 game_frame = tk.Frame(container)
 game_frame.grid(row=0, column=0, sticky="nsew")
@@ -17,11 +20,9 @@ root.bind("<Key>", game_content.key_down)
 
 game_history_frame = tk.Frame(container)
 game_history_frame.grid(row=0, column=0, sticky="nsew")
-game_history_content = game_history.GameHistory(master=game_history_frame)
+game_history_content = game_history.GameHistory(master=game_history_frame, main_menu_frame=main_menu_frame)
 game_history_content.pack(fill="both", expand=True)
 
-main_menu_frame = tk.Frame(container)
-main_menu_frame.grid(row=0, column=0, sticky="nsew")
 
 title_label = tk.Label(
     master=main_menu_frame,
@@ -44,13 +45,16 @@ play_button = tk.Button(
 )
 play_button.pack(pady=10)
 
+def history_of_games():
+    game_history_frame.tkraise()
+
 history_button = tk.Button(
     master=main_menu_frame,
     text="Last games",
     font=("Verdana", 20, "normal"),
     justify="center",
     width=10,
-    state="disabled"
+    command=history_of_games
 )
 history_button.pack(pady=10)
 

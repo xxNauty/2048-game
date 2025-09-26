@@ -1,9 +1,9 @@
 {
-    "last_update": "25.09.2025 15:38",
+    "last_update": "26.09.2025 09:38",
     "moves_up": {
-        "record": 3,
-        "last_update": "25.09.2025 15:33",
-        "updated_by": "bc9868dc"
+        "record": 0,
+        "last_update": "25.09.2025 17:07",
+        "updated_by": "ae0ac937"
     },
     "moves_down": {
         "record": 0,
@@ -11,23 +11,23 @@
         "updated_by": "f0e300bc"
     },
     "moves_left": {
-        "record": 10,
-        "last_update": "25.09.2025 14:56",
-        "updated_by": "991be1f7"
+        "record": 0,
+        "last_update": "25.09.2025 17:07",
+        "updated_by": "ae0ac937"
     },
     "moves_right": {
-        "record": 8,
-        "last_update": "25.09.2025 14:56",
-        "updated_by": "991be1f7"
+        "record": 0,
+        "last_update": "25.09.2025 17:07",
+        "updated_by": "07480532"
     },
     "total_moves": {
-        "record": 52,
-        "last_update": "25.09.2025 15:38",
-        "updated_by": "2a431aec"
+        "record": 12,
+        "last_update": "25.09.2025 17:08",
+        "updated_by": "3f02eea7"
     },
     "max_value_on_gameboard": {
-        "record": 64,
-        "last_update": "25.09.2025 15:31",
-        "updated_by": "f0e300bc"
+        "record": 512,
+        "last_update": "26.09.2025 09:38",
+        "updated_by": "08c9492b"
     }
 }
