@@ -36,7 +36,7 @@ def generate_report(count_up, count_down, count_left, count_right, status, max_v
         json.dump(data, file, indent=4)
         file.close()
 
-    return new_records
+    return new_records, file_name
 
 def remove_old_reports():
     files = [file for file in os.listdir("logs") if os.path.isfile(os.path.join("logs", file)) and file not in ["example.json", "records.json", ".gitignore"]]

@@ -1,3 +1,4 @@
+import json
 import tkinter as tk
 
 import backend.logic as logic
@@ -102,12 +103,12 @@ class Game(tk.Frame):
         self.update_grid()
 
         if status != "GAME NOT OVER":
-            new_records = game_history.generate_report(count_up, count_down, count_left, count_right, status, max_value_on_gameboard)
-            self.end_game_window(status, new_records)
+            new_records, output_file_name = game_history.generate_report(count_up, count_down, count_left, count_right, status, max_value_on_gameboard)
+            self.end_game_window(status, new_records, output_file_name)
             self.root_window.unbind("<Key>")
 
 
-    def end_game_window(self, status, records):
+    def end_game_window(self, status, records, output_file_name):
         window = tk.Tk()
         window.title("Game over")
         window.geometry("440x600")
@@ -151,10 +152,43 @@ class Game(tk.Frame):
             font=("Verdana", 20, "normal"),
             justify="center",
             width=10,
-            state="disabled",
+            command=lambda: self.after_game_statistics(output_file_name)
         )
         view_details_button.pack()
+
+    def after_game_statistics(self, filename):
+        with open(filename, "r") as file:
+            data = file.read()
+            data = json.loads(data)
+
+            window = tk.Tk()
+            window.title("Details of the game")
+            window.geometry("440x600")
+
+            title_widget = tk.Label(
+                master=window,
+                text="Details of the game",
+                font=("Verdana", 16, "normal"),
+                justify="center"
+            )
+            title_widget.pack()
+
+            details_widget = tk.Label(
+                master=window,
+                text=self.format_text(data),
+                justify="left",
+                font=("Verdana", 12, "normal")
+            )
+            details_widget.pack()
 
     def quit_game(self, window):
         window.destroy()
         self.root_window.destroy()
+
+    @staticmethod
+    def format_text(details):
+        output = ""
+        for key, value in details.items():
+            output += f"{key.capitalize()}: {value}\n"
+        return output
+
