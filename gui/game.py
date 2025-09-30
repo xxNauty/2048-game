@@ -1,12 +1,11 @@
+import os
 import json
 import tkinter as tk
-
 import backend.logic as logic
 import backend.moves as moves
 import backend.state as state
 import backend.game_history as game_history
-
-import gui.game_history as game_history_gui
+from dotenv import load_dotenv
 
 COLORS = {
     0: ("#cdc1b4", "#776e65"),
@@ -28,12 +27,14 @@ count_up = 0
 count_left = 0
 count_right = 0
 
+load_dotenv()
+
 class Game(tk.Frame):
     def __init__(self, master=None, root_window=None):
         super().__init__(master)
         self.root_window = root_window
         self.grid()
-        self.size = 4
+        self.size = int(os.getenv("GAMEBOARD_SIZE"))
         self.grid_cells = []
         self.init_grid()
         self.mat = logic.start_game()
