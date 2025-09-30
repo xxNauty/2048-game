@@ -1,9 +1,14 @@
+import os
 import random
+from dotenv import load_dotenv
+
+load_dotenv()
+size = int(os.getenv("GAMEBOARD_SIZE"))
 
 def start_game():
     mat = []
-    for _ in range(4):
-        mat.append([0] * 4)
+    for _ in range(size):
+        mat.append([0] * size)
 
     print("Commands are as follows : ")
     print("'W' or '↑' : Move Up")
@@ -15,8 +20,8 @@ def start_game():
     return mat
 
 def find_empty(mat):
-    for i in range(4):
-        for j in range(4):
+    for i in range(size):
+        for j in range(size):
             if mat[i][j] == 0:
                 return i, j
     return None, None
@@ -27,8 +32,8 @@ def add_new_2(mat):
 
     tries = 0
     while tries < 30:
-        r = random.randint(0, 3)
-        c = random.randint(0, 3)
+        r = random.randint(0, size - 1)
+        c = random.randint(0, size - 1)
         if mat[r][c] == 0:
             mat[r][c] = 2
             return
@@ -42,13 +47,13 @@ def compress(mat):
     changed = False
 
     new_mat = []
-    for _ in range(4):
-        new_mat.append([0] * 4)
+    for _ in range(size):
+        new_mat.append([0] * size)
 
-    for i in range(4):
+    for i in range(size):
         pos = 0
 
-        for j in range(4):
+        for j in range(size):
             if mat[i][j] != 0:
                 new_mat[i][pos] = mat[i][j]
                 if j != pos:
@@ -59,8 +64,8 @@ def compress(mat):
 
 def merge(mat):
     changed = False
-    for i in range(4):
-        for j in range(3):
+    for i in range(size):
+        for j in range(size - 1):
             if mat[i][j] == mat[i][j + 1] and mat[i][j] != 0:
                 mat[i][j] = mat[i][j] * 2
                 mat[i][j + 1] = 0
@@ -70,18 +75,18 @@ def merge(mat):
 
 def reverse(mat):
     new_mat = []
-    for i in range(4):
+    for i in range(size):
         new_mat.append([])
-        for j in range(4):
-            new_mat[i].append(mat[i][3 - j])
+        for j in range(size):
+            new_mat[i].append(mat[i][size - 1 - j])
 
     return new_mat
 
 def transpose(mat):
     new_mat = []
-    for i in range(4):
+    for i in range(size):
         new_mat.append([])
-        for j in range(4):
+        for j in range(size):
             new_mat[i].append(mat[j][i])
 
     return new_mat

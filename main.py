@@ -1,6 +1,9 @@
+import os
 import tkinter as tk
+from dotenv import load_dotenv
+from gui import game, game_history
 
-from gui import game, game_history, records, results
+load_dotenv()
 
 root = tk.Tk()
 root.title("2048 game")
@@ -33,6 +36,7 @@ title_label = tk.Label(
 title_label.pack(pady=10)
 
 def play_game():
+    root.geometry(f"{int(os.getenv("GAMEBOARD_SIZE")) * 110}x{int(os.getenv("GAMEBOARD_SIZE")) * 110}")
     game_frame.tkraise()
 
 play_button = tk.Button(
