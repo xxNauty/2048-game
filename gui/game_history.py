@@ -5,9 +5,8 @@ import json
 GAME_HISTORY_FILE = "logs/"
 
 class GameHistory(tk.Frame):
-    def __init__(self, master = None, main_menu_frame = None):
+    def __init__(self, master = None):
         super().__init__(master)
-        self.main_menu_frame = main_menu_frame
         self.get_data()
 
     def get_data(self):
@@ -54,14 +53,6 @@ class GameHistory(tk.Frame):
                 command=lambda f=file: self.get_details(f)
             )
             cell.grid(pady=5, padx=5)
-
-        return_button = tk.Button(
-            master=background,
-            text="Return to Main menu",
-            font=("Verdana", 20, "normal"),
-            command=lambda: self.main_menu_frame.tkraise()
-        )
-        return_button.pack()
 
     def get_details(self, filename):
         with open(GAME_HISTORY_FILE + filename) as file:

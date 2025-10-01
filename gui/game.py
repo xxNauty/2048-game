@@ -39,6 +39,7 @@ class Game(tk.Frame):
         self.init_grid()
         self.mat = logic.start_game()
         self.update_grid()
+        # self.bind("<Key>", self.key_down)
 
     def init_grid(self):
         background = tk.Frame(self, bg="#bbada0")
