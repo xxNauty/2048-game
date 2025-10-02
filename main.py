@@ -24,7 +24,7 @@ def get_geometry(root_window, width, height):
     return f"{width}x{height}+{x}+{y}"
 
 def unhide_main_menu(window):
-    root.deiconify()
+    root_window.deiconify()
     window.destroy()
 
 def play_game():
@@ -33,12 +33,12 @@ def play_game():
     game_window.title("2048 Game")
     game_window.geometry(get_geometry(game_window, int(os.getenv("GAMEBOARD_SIZE")) * 110, int(os.getenv("GAMEBOARD_SIZE")) * 110))
 
-    game_content = game.Game(master=game_window, root_window=root)
+    game_content = game.Game(master=game_window, root_window=root_window)
     game_content.pack(fill="both", expand=True)
 
     game_window.bind("<Key>", game_content.key_down)
 
-    root.iconify()
+    root_window.iconify()
     game_window.protocol("WM_DELETE_WINDOW", lambda: unhide_main_menu(game_window))
     game_window.focus_force() #ustawienie fokusa na nowo otwartym oknie
 
@@ -52,20 +52,16 @@ def history_of_games():
     history_content = game_history.GameHistory(master=history_window)
     history_content.pack(fill="both", expand=True)
 
-    root.iconify()
+    root_window.iconify()
     history_window.protocol("WM_DELETE_WINDOW", lambda: unhide_main_menu(history_window))
 
 if __name__ == "__main__":
-    root = tk.Tk()
-
-    root.title("2048 Game")
-    root.geometry(get_geometry(root, 440, 600))
-
-    container = tk.Frame(root)
-    container.pack(fill="both", expand=True)
+    root_window = tk.Tk()
+    root_window.title("2048 Game")
+    root_window.geometry(get_geometry(root_window, 440, 600))
 
     title_label = tk.Label(
-        master=container,
+        master=root_window,
         text="2048",
         font=("Verdana", 30, "bold"),
         justify="center"
@@ -73,7 +69,7 @@ if __name__ == "__main__":
     title_label.pack(pady=10)
 
     play_button = tk.Button(
-        master=container,
+        master=root_window,
         text="New game",
         font=("Verdana", 20, "normal"),
         justify="center",
@@ -83,7 +79,7 @@ if __name__ == "__main__":
     play_button.pack(pady=10)
 
     history_button = tk.Button(
-        master=container,
+        master=root_window,
         text="Last games",
         font=("Verdana", 20, "normal"),
         justify="center",
@@ -93,7 +89,7 @@ if __name__ == "__main__":
     history_button.pack(pady=10)
 
     settings_button = tk.Button(
-        master=container,
+        master=root_window,
         text="Settings",
         font=("Verdana", 20, "normal"),
         justify="center",
@@ -103,7 +99,7 @@ if __name__ == "__main__":
     settings_button.pack(pady=10)
 
     end_button = tk.Button(
-        master=container,
+        master=root_window,
         text="Quit game",
         font=("Verdana", 20, "normal"),
         justify="center",
@@ -112,4 +108,4 @@ if __name__ == "__main__":
     )
     end_button.pack(pady=10)
 
-    root.mainloop()
+    root_window.mainloop()

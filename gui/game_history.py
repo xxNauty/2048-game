@@ -23,18 +23,18 @@ class GameHistory(tk.Frame):
         background = tk.Frame(self)
         background.pack(fill="both", expand=True)
 
-        header = tk.Label(
+        header_label = tk.Label(
             master=background,
             text="Last 10 games played",
             font=("Verdana", 20, "bold"),
             justify="center",
         )
-        header.pack(pady=5)
+        header_label.pack(pady=5)
 
-        games = tk.Frame(
+        games_widget = tk.Frame(
             master=background,
         )
-        games.pack(pady=5)
+        games_widget.pack(pady=5)
 
         files = [file for file in os.listdir(self.game_history_path) if os.path.isfile(os.path.join(self.game_history_path, file))]
 
@@ -45,7 +45,7 @@ class GameHistory(tk.Frame):
 
         if not files:
             no_games_label = tk.Label(
-                master=games,
+                master=games_widget,
                 text="No game history available.",
                 justify="center",
                 font=("Verdana", 16, "normal")
@@ -54,15 +54,15 @@ class GameHistory(tk.Frame):
             return
 
         for file in files:
-            cell = tk.Button(
-                master=games,
+            game_button = tk.Button(
+                master=games_widget,
                 text=file[:-5],
                 justify="center",
                 font=("Verdana", 16, "normal"),
                 width=19,
                 command=lambda f=file: self.get_details(f)
             )
-            cell.grid(pady=5, padx=5)
+            game_button.grid(pady=5, padx=5)
 
     def get_details(self, filename):
         with open(self.game_history_path + filename) as file:
