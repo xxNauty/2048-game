@@ -1,5 +1,5 @@
 {
-    "last_update": "02.10.2025 14:27",
+    "last_update": "02.10.2025 14:57",
     "moves_up": {
         "record": 0,
         "last_update": "02.10.2025 14:22",
@@ -26,8 +26,8 @@
         "updated_by": "183c3b3f-"
     },
     "max_value_on_gameboard": {
-        "record": 32,
-        "last_update": "02.10.2025 14:22",
-        "updated_by": "4fb599af-"
+        "record": 64,
+        "last_update": "02.10.2025 14:57",
+        "updated_by": "2158f16e-"
     }
 }

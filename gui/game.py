@@ -133,13 +133,13 @@ class Game(tk.Frame):
             status_formatted = "You lost!"
 
 
-        game_result_status = tk.Label(
+        game_result_status_label = tk.Label(
             master=end_game_window,
             text=status_formatted,
             font=("Verdana", 20, "bold"),
             justify="center"
         )
-        game_result_status.pack(pady=5)
+        game_result_status_label.pack(pady=5)
 
         if records:
             records_label = tk.Label(
@@ -178,24 +178,24 @@ class Game(tk.Frame):
 
             parent_window.iconify()
 
-            window = tk.Toplevel()
-            window.title("Details of the game")
-            window.geometry(get_geometry(window, 440, 600))
+            after_game_statistics_window = tk.Toplevel()
+            after_game_statistics_window.title("Details of the game")
+            after_game_statistics_window.geometry(get_geometry(after_game_statistics_window, 440, 600))
 
-            title_widget = tk.Label(
-                master=window,
+            title_label = tk.Label(
+                master=after_game_statistics_window,
                 text="Details of the game",
                 font=("Verdana", 16, "normal"),
                 justify="center"
             )
-            title_widget.pack()
+            title_label.pack()
 
             details_widget = tk.Label(
-                master=window,
+                master=after_game_statistics_window,
                 text=format_text(data),
                 justify="left",
                 font=("Verdana", 12, "normal")
             )
             details_widget.pack()
 
-            window.protocol("WM_DELETE_WINDOW",  lambda: unhide_main_menu(parent_window, window))
+            after_game_statistics_window.protocol("WM_DELETE_WINDOW",  lambda: unhide_main_menu(parent_window, after_game_statistics_window))
