@@ -35,6 +35,7 @@ if __name__ == "__main__":
 
         root.iconify()
         game_window.protocol("WM_DELETE_WINDOW", lambda: unhide_main_menu(game_window))
+        game_window.focus_force() #ustawienie fokusa na nowo otwartym oknie
 
 
     def history_of_games():
@@ -48,10 +49,6 @@ if __name__ == "__main__":
 
         root.iconify()
         history_window.protocol("WM_DELETE_WINDOW", lambda: unhide_main_menu(history_window))
-
-    def quit_game():
-        root.destroy()
-
 
     title_label = tk.Label(
         master=container,
@@ -97,7 +94,7 @@ if __name__ == "__main__":
         font=("Verdana", 20, "normal"),
         justify="center",
         width=10,
-        command=quit_game
+        command=lambda: sys.exit()
     )
     end_button.pack(pady=10)
 
