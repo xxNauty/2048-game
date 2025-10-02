@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 import tkinter as tk
 import backend.logic as logic
 import backend.moves as moves
@@ -29,6 +30,11 @@ count_right = 0
 
 load_dotenv()
 
+
+def unhide_main_menu(root, window):
+    root.deiconify()
+    window.destroy()
+
 class Game(tk.Frame):
     def __init__(self, master=None, root_window=None):
         super().__init__(master)
@@ -39,7 +45,6 @@ class Game(tk.Frame):
         self.init_grid()
         self.mat = logic.start_game()
         self.update_grid()
-        # self.bind("<Key>", self.key_down)
 
     def init_grid(self):
         background = tk.Frame(self, bg="#bbada0")
@@ -107,13 +112,13 @@ class Game(tk.Frame):
         if status != "GAME NOT OVER":
             new_records, output_file_name = game_history.generate_report(count_up, count_down, count_left, count_right, status, max_value_on_gameboard)
             self.end_game_window(status, new_records, output_file_name)
-            self.root_window.unbind("<Key>")
+            self.master.unbind("<Key>")
 
 
     def end_game_window(self, status, records, output_file_name):
-        window = tk.Tk()
-        window.title("Game over")
-        window.geometry("440x600")
+        end_game_window = tk.Toplevel()
+        end_game_window.title("Game over")
+        end_game_window.geometry("440x600")
         status_formatted = ""
         if status == "WIN":
             status_formatted = "You win!"
@@ -122,7 +127,7 @@ class Game(tk.Frame):
 
 
         game_result_status = tk.Label(
-            master=window,
+            master=end_game_window,
             text=status_formatted,
             font=("Verdana", 20, "bold"),
             justify="center"
@@ -131,7 +136,7 @@ class Game(tk.Frame):
 
         if records:
             records_label = tk.Label(
-                master=window,
+                master=end_game_window,
                 text="New records made!",
                 font=("Verdana", 16, "normal"),
                 justify="center"
@@ -139,31 +144,34 @@ class Game(tk.Frame):
             records_label.pack(pady=5)
 
         quit_button = tk.Button(
-            master=window,
+            master=end_game_window,
             text="Quit game",
             font=("Verdana", 20, "normal"),
             justify="center",
             width=10,
-            command=lambda: self.quit_game(window)
+            command=lambda: sys.exit()
         )
         quit_button.pack(pady=10)
 
         view_details_button = tk.Button(
-            master=window,
+            master=end_game_window,
             text="Statistics",
             font=("Verdana", 20, "normal"),
             justify="center",
             width=10,
-            command=lambda: self.after_game_statistics(output_file_name)
+            command=lambda: self.after_game_statistics(output_file_name, end_game_window)
         )
         view_details_button.pack()
+        end_game_window.protocol("WM_DELETE_WINDOW", lambda: sys.exit())
 
-    def after_game_statistics(self, filename):
+    def after_game_statistics(self, filename, parent_window):
         with open(filename, "r") as file:
             data = file.read()
             data = json.loads(data)
 
-            window = tk.Tk()
+            parent_window.iconify()
+
+            window = tk.Toplevel()
             window.title("Details of the game")
             window.geometry("440x600")
 
@@ -183,9 +191,7 @@ class Game(tk.Frame):
             )
             details_widget.pack()
 
-    def quit_game(self, window):
-        window.destroy()
-        self.root_window.destroy()
+            window.protocol("WM_DELETE_WINDOW",  lambda: unhide_main_menu(parent_window, window))
 
     @staticmethod
     def format_text(details):
