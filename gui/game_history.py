@@ -2,12 +2,22 @@ import tkinter as tk
 import os
 import json
 
-GAME_HISTORY_FILE = "logs/"
+from dotenv import load_dotenv
+
+load_dotenv()
+
+def format_text(details):
+    output = ""
+    for key, value in details.items():
+        output += f"{key.capitalize()}: {value}\n"
+    return output
 
 class GameHistory(tk.Frame):
     def __init__(self, master = None):
         super().__init__(master)
+        self.game_history_path = os.getenv("GAME_HISTORY_PATH")
         self.get_data()
+
 
     def get_data(self):
         background = tk.Frame(self)
@@ -26,7 +36,7 @@ class GameHistory(tk.Frame):
         )
         games.pack(pady=5)
 
-        files = [file for file in os.listdir(GAME_HISTORY_FILE) if os.path.isfile(os.path.join(GAME_HISTORY_FILE, file))]
+        files = [file for file in os.listdir(self.game_history_path) if os.path.isfile(os.path.join(self.game_history_path, file))]
 
         #ignorowanie nadmiarowych plików
         for ignore_file in ["example.json", "records.json", ".gitignore"]:
@@ -55,7 +65,7 @@ class GameHistory(tk.Frame):
             cell.grid(pady=5, padx=5)
 
     def get_details(self, filename):
-        with open(GAME_HISTORY_FILE + filename) as file:
+        with open(self.game_history_path + filename) as file:
             details = file.read()
             details = json.loads(details)
 
@@ -72,21 +82,8 @@ class GameHistory(tk.Frame):
 
             text_widget = tk.Label(
                 window,
-                text=self.format_text(details),
+                text=format_text(details),
                 justify="left",
                 font=("Verdana", 12, "normal")
             )
             text_widget.pack()
-
-
-    @staticmethod
-    def clear_window(root: tk.Tk):
-        for widget in root.winfo_children():
-            widget.destroy()
-
-    @staticmethod
-    def format_text(details):
-        output = ""
-        for key, value in details.items():
-            output += f"{key.capitalize()}: {value}\n"
-        return output
