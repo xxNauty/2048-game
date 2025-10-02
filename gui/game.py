@@ -54,8 +54,8 @@ class Game(tk.Frame):
         self.update_grid()
 
     def init_grid(self):
-        background = tk.Frame(self, bg="#bbada0")
-        background.grid()
+        background = tk.Frame(self, bg="#bbada0", width=self.size * 110, height=self.size * 110)
+        background.pack(anchor="center")
         for i in range(self.size):
             row = []
             for j in range(self.size):
