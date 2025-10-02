@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
 size = int(os.getenv("GAMEBOARD_SIZE"))
 
 def get_current_state(mat):

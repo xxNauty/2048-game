@@ -9,46 +9,60 @@ load_dotenv()
 def kill_app():
     sys.exit()
 
-root = tk.Tk()
+# ustawia okno na środku ekranu, koordynaty liczone są od lewego górnego rogu
+def get_geometry(root_window, width, height):
+    if width < 440:
+        width = 440
 
-root.title("2048 Game")
-root.geometry("440x600")
+    if height < 600:
+        height = 600
 
-container = tk.Frame(root)
-container.pack(fill="both", expand=True)
+    screen_width = root_window.winfo_screenwidth()
+    screen_height = root_window.winfo_screenheight()
+    x = (screen_width // 2) - (width // 2)
+    y = (screen_height // 2) - (height // 2)
+    return f"{width}x{height}+{x}+{y}"
+
+def unhide_main_menu(window):
+    root.deiconify()
+    window.destroy()
+
+def play_game():
+    game_window = tk.Toplevel()
+
+    game_window.title("2048 Game")
+    game_window.geometry(get_geometry(game_window, int(os.getenv("GAMEBOARD_SIZE")) * 110, int(os.getenv("GAMEBOARD_SIZE")) * 110))
+
+    game_content = game.Game(master=game_window, root_window=root)
+    game_content.pack(fill="both", expand=True)
+
+    game_window.bind("<Key>", game_content.key_down)
+
+    root.iconify()
+    game_window.protocol("WM_DELETE_WINDOW", lambda: unhide_main_menu(game_window))
+    game_window.focus_force() #ustawienie fokusa na nowo otwartym oknie
+
+
+def history_of_games():
+    history_window = tk.Toplevel()
+
+    history_window.title("Last 10 played games")
+    history_window.geometry(get_geometry(history_window, 440, 600))
+
+    history_content = game_history.GameHistory(master=history_window)
+    history_content.pack(fill="both", expand=True)
+
+    root.iconify()
+    history_window.protocol("WM_DELETE_WINDOW", lambda: unhide_main_menu(history_window))
 
 if __name__ == "__main__":
-    def unhide_main_menu(window):
-        root.deiconify()
-        window.destroy()
+    root = tk.Tk()
 
-    def play_game():
-        game_window = tk.Toplevel()
+    root.title("2048 Game")
+    root.geometry(get_geometry(root, 440, 600))
 
-        game_window.title("2048 Game")
-        game_window.geometry(f"{int(os.getenv("GAMEBOARD_SIZE")) * 110}x{int(os.getenv("GAMEBOARD_SIZE")) * 110}")
-
-        game_content = game.Game(master=game_window, root_window=root)
-        game_content.pack(fill="both", expand=True)
-
-        game_window.bind("<Key>", game_content.key_down)
-
-        root.iconify()
-        game_window.protocol("WM_DELETE_WINDOW", lambda: unhide_main_menu(game_window))
-        game_window.focus_force() #ustawienie fokusa na nowo otwartym oknie
-
-
-    def history_of_games():
-        history_window = tk.Toplevel()
-
-        history_window.title("Last 10 played games")
-        history_window.geometry("440x600")
-
-        history_content = game_history.GameHistory(master=history_window)
-        history_content.pack(fill="both", expand=True)
-
-        root.iconify()
-        history_window.protocol("WM_DELETE_WINDOW", lambda: unhide_main_menu(history_window))
+    container = tk.Frame(root)
+    container.pack(fill="both", expand=True)
 
     title_label = tk.Label(
         master=container,

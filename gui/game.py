@@ -7,6 +7,7 @@ import backend.moves as moves
 import backend.state as state
 import backend.game_history as game_history
 from dotenv import load_dotenv
+from main import get_geometry
 
 COLORS = {
     0: ("#cdc1b4", "#776e65"),
@@ -34,6 +35,12 @@ load_dotenv()
 def unhide_main_menu(root, window):
     root.deiconify()
     window.destroy()
+
+def format_text(details):
+    output = ""
+    for key, value in details.items():
+        output += f"{key.capitalize()}: {value}\n"
+    return output
 
 class Game(tk.Frame):
     def __init__(self, master=None, root_window=None):
@@ -118,7 +125,7 @@ class Game(tk.Frame):
     def end_game_window(self, status, records, output_file_name):
         end_game_window = tk.Toplevel()
         end_game_window.title("Game over")
-        end_game_window.geometry("440x600")
+        end_game_window.geometry(get_geometry(end_game_window, 440, 600))
         status_formatted = ""
         if status == "WIN":
             status_formatted = "You win!"
@@ -173,7 +180,7 @@ class Game(tk.Frame):
 
             window = tk.Toplevel()
             window.title("Details of the game")
-            window.geometry("440x600")
+            window.geometry(get_geometry(window, 440, 600))
 
             title_widget = tk.Label(
                 master=window,
@@ -185,18 +192,10 @@ class Game(tk.Frame):
 
             details_widget = tk.Label(
                 master=window,
-                text=self.format_text(data),
+                text=format_text(data),
                 justify="left",
                 font=("Verdana", 12, "normal")
             )
             details_widget.pack()
 
             window.protocol("WM_DELETE_WINDOW",  lambda: unhide_main_menu(parent_window, window))
-
-    @staticmethod
-    def format_text(details):
-        output = ""
-        for key, value in details.items():
-            output += f"{key.capitalize()}: {value}\n"
-        return output
-
