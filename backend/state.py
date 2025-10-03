@@ -4,16 +4,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-size = int(os.getenv("GAMEBOARD_SIZE"))
-
-def get_current_state(mat):
+def get_current_state(mat, size, end_val):
     max_val = 0
     for i in range(size):
         for j in range(size):
             field_val = mat[i][j]
             if field_val > max_val:
                 max_val = field_val
-            if field_val == int(os.getenv("END_OF_GAME_VALUE")):
+            if field_val == end_val:
                 return 'WIN', max_val
 
     for i in range(size):

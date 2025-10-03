@@ -1,12 +1,6 @@
-import os
 import random
-from dotenv import load_dotenv
 
-load_dotenv()
-
-size = int(os.getenv("GAMEBOARD_SIZE"))
-
-def start_game():
+def start_game(size):
     mat = []
     for _ in range(size):
         mat.append([0] * size)
@@ -17,17 +11,17 @@ def start_game():
     print("'A' or '←' : Move Left")
     print("'D' or '→' : Move Right")
 
-    add_new_2(mat)
+    add_new_2(mat, size)
     return mat
 
-def find_empty(mat):
+def find_empty(mat, size):
     for i in range(size):
         for j in range(size):
             if mat[i][j] == 0:
                 return i, j
     return None, None
 
-def add_new_2(mat):
+def add_new_2(mat, size):
     if all(all(cell != 0 for cell in row) for row in mat):
         return
 
@@ -40,11 +34,11 @@ def add_new_2(mat):
             return
         tries += 1
 
-    r, c = find_empty(mat)
+    r, c = find_empty(mat, size)
     if r is not None and c is not None:
         mat[r][c] = 2
 
-def compress(mat):
+def compress(mat, size):
     changed = False
 
     new_mat = []
@@ -63,7 +57,7 @@ def compress(mat):
 
     return new_mat, changed
 
-def merge(mat):
+def merge(mat, size):
     changed = False
     for i in range(size):
         for j in range(size - 1):
@@ -74,7 +68,7 @@ def merge(mat):
 
     return mat, changed
 
-def reverse(mat):
+def reverse(mat, size):
     new_mat = []
     for i in range(size):
         new_mat.append([])
@@ -83,7 +77,7 @@ def reverse(mat):
 
     return new_mat
 
-def transpose(mat):
+def transpose(mat, size):
     new_mat = []
     for i in range(size):
         new_mat.append([])

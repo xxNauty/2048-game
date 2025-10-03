@@ -1,3 +1,4 @@
+import json
 import os
 import sys
 import tkinter as tk
@@ -27,14 +28,30 @@ def unhide_main_menu(window):
     root_window.deiconify()
     window.destroy()
 
+def mark_as_checked(data, element):
+    with open("game_settings.json", "w") as file:
+
+        for index in range(len(data)):
+            data[str(index + 1)]['checked'] = False
+
+        data[element]['checked'] = True
+
+        file.seek(0)
+        file.truncate()
+
+        json.dump(data, file)
+        print(data, element, sep="\n")
+        file.close()
+
 def play_game():
-    game_window = tk.Toplevel()
+    game_window = tk.Toplevel(root_window)
 
     game_window.title("2048 Game")
-    game_window.geometry(get_geometry(game_window, int(os.getenv("GAMEBOARD_SIZE")) * 110, int(os.getenv("GAMEBOARD_SIZE")) * 110))
 
     game_content = game.Game(master=game_window, root_window=root_window)
     game_content.pack(fill="both", expand=True)
+
+    game_window.geometry(get_geometry(game_window, game_content.size * 110, game_content.size * 110))
 
     game_window.bind("<Key>", game_content.key_down)
 
@@ -44,7 +61,7 @@ def play_game():
 
 
 def history_of_games():
-    history_window = tk.Toplevel()
+    history_window = tk.Toplevel(root_window)
 
     history_window.title("Last 10 played games")
     history_window.geometry(get_geometry(history_window, 440, 600))
@@ -54,6 +71,31 @@ def history_of_games():
 
     root_window.iconify()
     history_window.protocol("WM_DELETE_WINDOW", lambda: unhide_main_menu(history_window))
+
+def settings():
+    settings_window = tk.Toplevel(root_window)
+
+    settings_window.title("Choose the level of game")
+    settings_window.geometry(get_geometry(settings_window, 440, 600))
+
+    with open("game_settings.json", "r") as file:
+        data = json.loads(file.read())
+        for element in range(len(data)):
+            identifier = str(element + 1)
+            level_label = tk.Button(
+                master=settings_window,
+                text=data[identifier],
+                font=("Verdana", 12, "normal"),
+                justify="center",
+                width=40,
+                command=lambda id_=identifier: (mark_as_checked(data, id_), unhide_main_menu(settings_window)),
+                state="disabled" if data[identifier]['checked'] else "normal"
+            )
+            level_label.pack(pady=10)
+        file.close()
+
+        root_window.iconify()
+        settings_window.protocol("WM_DELETE_WINDOW", lambda: unhide_main_menu(settings_window))
 
 if __name__ == "__main__":
     root_window = tk.Tk()
@@ -94,7 +136,7 @@ if __name__ == "__main__":
         font=("Verdana", 20, "normal"),
         justify="center",
         width=10,
-        state="disabled"
+        command=settings
     )
     settings_button.pack(pady=10)
 
