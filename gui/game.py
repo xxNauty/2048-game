@@ -1,4 +1,3 @@
-import os
 import json
 import sys
 import tkinter as tk
@@ -6,7 +5,6 @@ import backend.logic as logic
 import backend.moves as moves
 import backend.state as state
 import backend.game_history as game_history
-from dotenv import load_dotenv
 from main import get_geometry
 
 COLORS = {
@@ -29,9 +27,6 @@ count_up = 0
 count_left = 0
 count_right = 0
 
-load_dotenv()
-
-
 def unhide_main_menu(root, window):
     root.deiconify()
     window.destroy()
@@ -46,12 +41,23 @@ class Game(tk.Frame):
     def __init__(self, master=None, root_window=None):
         super().__init__(master)
         self.root_window = root_window
-        self.grid()
-        self.size = int(os.getenv("GAMEBOARD_SIZE"))
+        self.size = 4
+        self.end_value = 2048
         self.grid_cells = []
+        self.read_settings()
+        self.grid()
         self.init_grid()
-        self.mat = logic.start_game()
+        self.mat = logic.start_game(self.size)
         self.update_grid()
+
+    def read_settings(self):
+        with open("game_settings.json", "r") as file:
+            data = json.loads(file.read())
+            for i in range(len(data)):
+                i = str(i + 1)
+                if data[i]['checked']:
+                    self.size = data[i]['size']
+                    self.end_value = data[i]['end_val']
 
     def init_grid(self):
         background = tk.Frame(self, bg="#bbada0", width=self.size * 110, height=self.size * 110)
@@ -94,6 +100,8 @@ class Game(tk.Frame):
     def key_down(self, event):
         global count_up, count_down, count_right, count_left
 
+        moves.set_size(self.size)
+
         key = event.keysym
 
         if key in ["Up", "w", "W"]:
@@ -111,9 +119,9 @@ class Game(tk.Frame):
         else:
             return
 
-        status, max_value_on_gameboard = state.get_current_state(self.mat)
+        status, max_value_on_gameboard = state.get_current_state(self.mat, self.size, self.end_value)
         if status == "GAME NOT OVER" and moved:
-            logic.add_new_2(self.mat)
+            logic.add_new_2(self.mat, self.size)
         self.update_grid()
 
         if status != "GAME NOT OVER":
