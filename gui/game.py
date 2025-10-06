@@ -31,12 +31,6 @@ def unhide_main_menu(root, window):
     root.deiconify()
     window.destroy()
 
-def format_text(details):
-    output = ""
-    for key, value in details.items():
-        output += f"{key.capitalize()}: {value}\n"
-    return output
-
 class Game(tk.Frame):
     def __init__(self, master=None, root_window=None):
         super().__init__(master)
@@ -198,12 +192,16 @@ class Game(tk.Frame):
             )
             title_label.pack()
 
-            details_widget = tk.Label(
+            details_widget = tk.Frame(
                 master=after_game_statistics_window,
-                text=format_text(data),
-                justify="left",
-                font=("Verdana", 12, "normal")
+                width=440,
+                height=440,
             )
-            details_widget.pack()
+            details_widget.pack(pady=10)
+
+            for i, (k, v) in enumerate(data.items()):
+                data_key = k.replace("_", " ").capitalize()
+                tk.Label(details_widget, text=data_key, font=("Verdana", 15, "bold"), borderwidth=2, relief="solid", width=14).grid(row=i, column=0, sticky='w')
+                tk.Label(details_widget, text=v, font=("Verdana", 15, "normal"), borderwidth=2, relief="solid", width=16).grid(row=i, column=1, sticky='w')
 
             after_game_statistics_window.protocol("WM_DELETE_WINDOW",  lambda: unhide_main_menu(parent_window, after_game_statistics_window))
