@@ -82,9 +82,12 @@ def settings():
         data = json.loads(file.read())
         for element in range(len(data)):
             identifier = str(element + 1)
+            formatted_text = "Size: " + str(data[identifier]['size']) + " | End value: " + str(data[identifier]['end_val'])
+            if data[identifier]['end_val'] == 64:
+                formatted_text += "   "
             level_label = tk.Button(
                 master=settings_window,
-                text=data[identifier],
+                text=formatted_text,
                 font=("Verdana", 12, "normal"),
                 justify="center",
                 width=40,
