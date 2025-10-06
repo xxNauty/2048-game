@@ -1,3 +1,4 @@
+import datetime
 import tkinter as tk
 import os
 import json
@@ -5,12 +6,6 @@ import json
 from dotenv import load_dotenv
 
 load_dotenv()
-
-def format_text(details):
-    output = ""
-    for key, value in details.items():
-        output += f"{key.capitalize()}: {value}\n"
-    return output
 
 class GameHistory(tk.Frame):
     def __init__(self, master = None):
@@ -56,7 +51,7 @@ class GameHistory(tk.Frame):
         for file in files:
             game_button = tk.Button(
                 master=games_widget,
-                text=file[:-5],
+                text=datetime.datetime.strptime(file[:-5], os.getenv("DATE_FORMAT_FOR_FILENAMES")).strftime(os.getenv("DATE_FORMAT_NORMAL")),
                 justify="center",
                 font=("Verdana", 16, "normal"),
                 width=19,
@@ -66,24 +61,30 @@ class GameHistory(tk.Frame):
 
     def get_details(self, filename):
         with open(self.game_history_path + filename) as file:
-            details = file.read()
-            details = json.loads(details)
+            data = file.read()
+            data = json.loads(data)
 
             window = tk.Tk()
             window.title("Details of game")
             window.geometry("440x440")
             text_label = tk.Label(
                 window,
-                text=f"Details of game: {details['game_identifier']}",
+                text=f"Details of game: {data['game_identifier']}",
                 justify="center",
                 font=("Verdana", 20, "bold")
             )
             text_label.pack()
 
-            text_widget = tk.Label(
-                window,
-                text=format_text(details),
-                justify="left",
-                font=("Verdana", 12, "normal")
+            details_widget = tk.Frame(
+                master=window,
+                width=440,
+                height=440,
             )
-            text_widget.pack()
+            details_widget.pack(pady=10)
+
+            for i, (k, v) in enumerate(data.items()):
+                data_key = k.replace("_", " ").capitalize()
+                tk.Label(details_widget, text=data_key, font=("Verdana", 15, "bold"), borderwidth=2, relief="solid",
+                         width=14).grid(row=i, column=0, sticky='w')
+                tk.Label(details_widget, text=v, font=("Verdana", 15, "normal"), borderwidth=2, relief="solid",
+                         width=16).grid(row=i, column=1, sticky='w')
