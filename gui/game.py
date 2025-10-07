@@ -119,7 +119,7 @@ class Game(tk.Frame):
         self.update_grid()
 
         if status != "GAME NOT OVER":
-            new_records, output_file_name = game_history.generate_report(count_up, count_down, count_left, count_right, status, max_value_on_gameboard)
+            new_records, output_file_name = game_history.generate_report((self.size, self.end_value), count_up, count_down, count_left, count_right, status, max_value_on_gameboard)
             self.end_game_window(status, new_records, output_file_name)
             self.master.unbind("<Key>")
 

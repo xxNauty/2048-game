@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def generate_report(count_up, count_down, count_left, count_right, status, max_value_on_gameboard):
+def generate_report(game_settings, count_up, count_down, count_left, count_right, status, max_value_on_gameboard):
     remove_old_reports()
     game_identifier = str(uuid.uuid4()).split("-")[0] + "-"
 
@@ -28,7 +28,7 @@ def generate_report(count_up, count_down, count_left, count_right, status, max_v
         "highest_number": max_value_on_gameboard
     }
 
-    new_records = records.update_records(game_identifier, count_up, count_down, count_left, count_right, max_value_on_gameboard)
+    new_records = records.update_records(game_identifier, game_settings, count_up, count_down, count_left, count_right, max_value_on_gameboard)
 
     file_name = "logs/" + date_of_game.strftime(os.getenv("DATE_FORMAT_FOR_FILENAMES")) + ".json"
 

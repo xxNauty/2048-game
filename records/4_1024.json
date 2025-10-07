@@ -1,0 +1,33 @@
+{
+    "last_update": "07.10.2025 13:53",
+    "moves_up": {
+        "record": 52,
+        "last_update": "07.10.2025 13:43",
+        "updated_by": "d4bd8f2b-"
+    },
+    "moves_down": {
+        "record": 61,
+        "last_update": "07.10.2025 13:43",
+        "updated_by": "d4bd8f2b-"
+    },
+    "moves_left": {
+        "record": 67,
+        "last_update": "07.10.2025 13:53",
+        "updated_by": "6e019c69-"
+    },
+    "moves_right": {
+        "record": 62,
+        "last_update": "07.10.2025 13:53",
+        "updated_by": "6e019c69-"
+    },
+    "total_moves": {
+        "record": 257,
+        "last_update": "07.10.2025 13:43",
+        "updated_by": "d4bd8f2b-"
+    },
+    "max_value_on_gameboard": {
+        "record": 256,
+        "last_update": "07.10.2025 13:43",
+        "updated_by": "d4bd8f2b-"
+    }
+}
