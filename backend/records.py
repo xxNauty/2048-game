@@ -6,13 +6,13 @@ from datetime import datetime
 
 load_dotenv()
 
-def update_records(game_identifier, count_up, count_down, count_left, count_right, max_value_on_gameboard):
+def update_records(game_identifier, game_settings, count_up, count_down, count_left, count_right, max_value_on_gameboard):
     total_moves = count_up + count_down + count_left + count_right
     current_date = datetime.now().strftime(os.getenv("DATE_FORMAT_NORMAL"))
 
     updated = []
 
-    with open(os.getenv("RECORDS_PATH"), "r+") as file:
+    with open(os.getenv("RECORDS_PATH") + f"{game_settings[0]}_{game_settings[1]}.json", "r+") as file:
         if file.read() == '':
             data = {
                 "last_update": current_date,
