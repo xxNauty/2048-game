@@ -21,15 +21,15 @@ def reset():
                     if "moves_" in element:
                         json_content[element]['record'] = 999
                         json_content[element]['last_update'] = current_date
-                        json_content[element]['updated_by'] = "-"
+                        json_content[element]['updated_by'] = "record not set"
                     elif element == "total_moves":
                         json_content[element]['record'] = 3996
                         json_content[element]['last_update'] = current_date
-                        json_content[element]['updated_by'] = "-"
+                        json_content[element]['updated_by'] = "record not set"
                     elif element == "max_value_on_gameboard":
                         json_content[element]['record'] = 0
                         json_content[element]['last_update'] = current_date
-                        json_content[element]['updated_by'] = "-"
+                        json_content[element]['updated_by'] = "record not set"
                 json_content['last_update'] = current_date
                 file_data.seek(0)
                 file_data.truncate()

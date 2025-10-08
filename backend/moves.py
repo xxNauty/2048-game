@@ -1,4 +1,4 @@
-import backend.logic as logic
+from backend import logic
 
 gameboard_size = 0
 

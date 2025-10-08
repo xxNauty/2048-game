@@ -5,12 +5,6 @@ def start_game(size):
     for _ in range(size):
         mat.append([0] * size)
 
-    print("Commands are as follows : ")
-    print("'W' or '↑' : Move Up")
-    print("'S' or '↓' : Move Down")
-    print("'A' or '←' : Move Left")
-    print("'D' or '→' : Move Right")
-
     add_new_2(mat, size)
     return mat
 
@@ -22,21 +16,11 @@ def find_empty(mat, size):
     return None, None
 
 def add_new_2(mat, size):
-    if all(all(cell != 0 for cell in row) for row in mat):
+    empty_positions = [(i, j) for i in range(size) for j in range(size) if mat[i][j] == 0]
+    if not empty_positions:
         return
-
-    tries = 0
-    while tries < 30:
-        r = random.randint(0, size - 1)
-        c = random.randint(0, size - 1)
-        if mat[r][c] == 0:
-            mat[r][c] = 2
-            return
-        tries += 1
-
-    r, c = find_empty(mat, size)
-    if r is not None and c is not None:
-        mat[r][c] = 2
+    r, c = random.choice(empty_positions)
+    mat[r][c] = 2
 
 def compress(mat, size):
     changed = False

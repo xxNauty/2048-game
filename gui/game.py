@@ -1,11 +1,8 @@
 import json
 import sys
 import tkinter as tk
-import backend.logic as logic
-import backend.moves as moves
-import backend.state as state
-import backend.game_history as game_history
-from main import get_geometry
+
+from backend import logic, moves, state, game_history, common
 
 COLORS = {
     0: ("#cdc1b4", "#776e65"),
@@ -20,16 +17,8 @@ COLORS = {
     512: ("#edc850", "#f9f6f2"),
     1024: ("#edc53f", "#f9f6f2"),
     2048: ("#edc22e", "#f9f6f2"),
+    4096: ("#edc00a", "#f9f6f2")
 }
-
-count_down = 0
-count_up = 0
-count_left = 0
-count_right = 0
-
-def unhide_main_menu(root, window):
-    root.deiconify()
-    window.destroy()
 
 class Game(tk.Frame):
     def __init__(self, master=None, root_window=None):
@@ -38,6 +27,10 @@ class Game(tk.Frame):
         self.size = 4
         self.end_value = 2048
         self.grid_cells = []
+        self.count_up = 0
+        self.count_down = 0
+        self.count_left = 0
+        self.count_right = 0
         self.read_settings()
         self.grid()
         self.init_grid()
@@ -45,13 +38,34 @@ class Game(tk.Frame):
         self.update_grid()
 
     def read_settings(self):
-        with open("game_settings.json", "r") as file:
-            data = json.loads(file.read())
-            for i in range(len(data)):
-                i = str(i + 1)
-                if data[i]['checked']:
-                    self.size = data[i]['size']
-                    self.end_value = data[i]['end_val']
+        try:
+            with open("game_settings.json", "r") as file:
+                data = json.loads(file.read())
+                for i in range(len(data)):
+                    i = str(i + 1)
+                    if data[i]['checked']:
+                        self.size = data[i]['size']
+                        self.end_value = data[i]['end_val']
+        except FileNotFoundError:
+            error_window = tk.Toplevel(self)
+            error_window.title("An error occurred")
+            error_window.geometry(common.get_geometry(error_window, 440, 600))
+
+            error_title = tk.Label(
+                master=error_window,
+                text=f"File game_settings.json does not exist"
+            )
+            error_title.pack()
+        except json.JSONDecodeError:
+            error_window = tk.Toplevel(self)
+            error_window.title("An error occurred")
+            error_window.geometry(common.get_geometry(error_window, 440, 600))
+
+            error_title = tk.Label(
+                master=error_window,
+                text=f"Something went wrong with the file game_settings.json"
+            )
+            error_title.pack()
 
     def init_grid(self):
         background = tk.Frame(self, bg="#bbada0", width=self.size * 110, height=self.size * 110)
@@ -92,23 +106,21 @@ class Game(tk.Frame):
         self.update_idletasks()
 
     def key_down(self, event):
-        global count_up, count_down, count_right, count_left
-
         moves.set_size(self.size)
 
         key = event.keysym
 
         if key in ["Up", "w", "W"]:
-            count_up += 1
+            self.count_up += 1
             self.mat, moved = moves.move_up(self.mat)
         elif key in ["Down", "s", "S"]:
-            count_down += 1
+            self.count_down += 1
             self.mat, moved = moves.move_down(self.mat)
         elif key in ["Left", "a", "A"]:
-            count_left += 1
+            self.count_left += 1
             self.mat, moved = moves.move_left(self.mat)
         elif key in ["Right", "d", "D"]:
-            count_right += 1
+            self.count_right += 1
             self.mat, moved = moves.move_right(self.mat)
         else:
             return
@@ -119,7 +131,7 @@ class Game(tk.Frame):
         self.update_grid()
 
         if status != "GAME NOT OVER":
-            new_records, output_file_name = game_history.generate_report((self.size, self.end_value), count_up, count_down, count_left, count_right, status, max_value_on_gameboard)
+            new_records, output_file_name = game_history.generate_report((self.size, self.end_value), self.count_up, self.count_down, self.count_left, self.count_right, status, max_value_on_gameboard)
             self.end_game_window(status, new_records, output_file_name)
             self.master.unbind("<Key>")
 
@@ -127,7 +139,7 @@ class Game(tk.Frame):
     def end_game_window(self, status, records, output_file_name):
         end_game_window = tk.Toplevel()
         end_game_window.title("Game over")
-        end_game_window.geometry(get_geometry(end_game_window, 440, 600))
+        end_game_window.geometry(common.get_geometry(end_game_window, 440, 600))
         status_formatted = ""
         if status == "WIN":
             status_formatted = "You win!"
@@ -174,34 +186,55 @@ class Game(tk.Frame):
         end_game_window.protocol("WM_DELETE_WINDOW", lambda: sys.exit())
 
     def after_game_statistics(self, filename, parent_window):
-        with open(filename, "r") as file:
-            data = file.read()
-            data = json.loads(data)
+        try:
+            with open(filename, "r") as file:
+                data = file.read()
+                data = json.loads(data)
 
-            parent_window.iconify()
+                parent_window.iconify()
 
-            after_game_statistics_window = tk.Toplevel()
-            after_game_statistics_window.title("Details of the game")
-            after_game_statistics_window.geometry(get_geometry(after_game_statistics_window, 440, 600))
+                after_game_statistics_window = tk.Toplevel()
+                after_game_statistics_window.title("Details of the game")
+                after_game_statistics_window.geometry(common.get_geometry(after_game_statistics_window, 440, 600))
 
-            title_label = tk.Label(
-                master=after_game_statistics_window,
-                text="Details of the game",
-                font=("Verdana", 16, "normal"),
-                justify="center"
+                title_label = tk.Label(
+                    master=after_game_statistics_window,
+                    text="Details of the game",
+                    font=("Verdana", 16, "normal"),
+                    justify="center"
+                )
+                title_label.pack()
+
+                details_widget = tk.Frame(
+                    master=after_game_statistics_window,
+                    width=440,
+                    height=440,
+                )
+                details_widget.pack(pady=10)
+
+                for i, (k, v) in enumerate(data.items()):
+                    data_key = k.replace("_", " ").capitalize()
+                    tk.Label(details_widget, text=data_key, font=("Verdana", 15, "bold"), borderwidth=2, relief="solid", width=14).grid(row=i, column=0, sticky='w')
+                    tk.Label(details_widget, text=v, font=("Verdana", 15, "normal"), borderwidth=2, relief="solid", width=16).grid(row=i, column=1, sticky='w')
+
+                after_game_statistics_window.protocol("WM_DELETE_WINDOW",  lambda: common.unhide_previous_window(parent_window, after_game_statistics_window))
+        except FileNotFoundError:
+            error_window = tk.Toplevel(self)
+            error_window.title("An error occurred")
+            error_window.geometry(common.get_geometry(error_window, 440, 600))
+
+            error_title = tk.Label(
+                master=error_window,
+                text=f"File {filename} does not exist"
             )
-            title_label.pack()
+            error_title.pack()
+        except json.JSONDecodeError:
+            error_window = tk.Toplevel(self)
+            error_window.title("An error occurred")
+            error_window.geometry(common.get_geometry(error_window, 440, 600))
 
-            details_widget = tk.Frame(
-                master=after_game_statistics_window,
-                width=440,
-                height=440,
+            error_title = tk.Label(
+                master=error_window,
+                text=f"Something went wrong with the file {filename}"
             )
-            details_widget.pack(pady=10)
-
-            for i, (k, v) in enumerate(data.items()):
-                data_key = k.replace("_", " ").capitalize()
-                tk.Label(details_widget, text=data_key, font=("Verdana", 15, "bold"), borderwidth=2, relief="solid", width=14).grid(row=i, column=0, sticky='w')
-                tk.Label(details_widget, text=v, font=("Verdana", 15, "normal"), borderwidth=2, relief="solid", width=16).grid(row=i, column=1, sticky='w')
-
-            after_game_statistics_window.protocol("WM_DELETE_WINDOW",  lambda: unhide_main_menu(parent_window, after_game_statistics_window))
+            error_title.pack()
