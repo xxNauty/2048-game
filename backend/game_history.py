@@ -2,7 +2,9 @@ import json
 import uuid
 import os
 
+from json import JSONDecodeError
 from backend import records
+from gui import exception_handler
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -60,8 +62,8 @@ def get_details(file_name):
             data = json.loads(file.read())
             return data
     except FileNotFoundError:
-        pass
-    except json.JSONDecodeError:
-        pass
+        exception_handler.handle_file_not_found_error(file_name)
+    except JSONDecodeError:
+        exception_handler.handle_JSON_decode_error()
     finally:
         file.close()

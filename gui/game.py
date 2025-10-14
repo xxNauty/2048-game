@@ -1,10 +1,12 @@
 import json
 import sys
 import tkinter as tk
+from json import JSONDecodeError
 
 import game_status
 
 from backend import logic, moves, state, game_history, common
+from gui import exception_handler
 
 COLORS = {
     0: ("#cdc1b4", "#776e65"),
@@ -196,6 +198,8 @@ class Game(tk.Frame):
 
                 after_game_statistics_window.protocol("WM_DELETE_WINDOW",  lambda: common.unhide_previous_window(parent_window, after_game_statistics_window))
         except FileNotFoundError:
-            pass
-        except json.JSONDecodeError:
-            pass
+            exception_handler.handle_file_not_found_error(filename)
+        except JSONDecodeError:
+            exception_handler.handle_JSON_decode_error()
+        finally:
+            file.close()
