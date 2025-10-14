@@ -4,6 +4,7 @@ import json
 from dotenv import load_dotenv
 from datetime import datetime
 from json import JSONDecodeError
+from gui import exception_handler
 
 load_dotenv()
 
@@ -95,9 +96,9 @@ def update_records(game_identifier, game_settings, count_up, count_down, count_l
                 file.truncate()
                 json.dump(data, file, indent=4)
     except FileNotFoundError:
-        pass
+        exception_handler.handle_file_not_found_error(f"{game_settings[0]}_{game_settings[1]}.json")
     except JSONDecodeError:
-        pass
+        exception_handler.handle_JSON_decode_error()
     finally:
         file.close()
 
@@ -109,8 +110,8 @@ def read_records(file_name):
             record_details = json.loads(file.read())
             return record_details
     except FileNotFoundError:
-        pass
+        exception_handler.handle_file_not_found_error(file_name + ".json")
     except JSONDecodeError:
-        pass
+        exception_handler.handle_JSON_decode_error()
     finally:
         file.close()

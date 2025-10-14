@@ -3,6 +3,8 @@ import json
 import game_status
 
 from json import JSONDecodeError
+from gui import exception_handler
+
 
 def read_settings():
     try:
@@ -10,9 +12,9 @@ def read_settings():
             data = json.loads(file.read())
             return data
     except FileNotFoundError:
-        pass
+        exception_handler.handle_file_not_found_error("game_settings.json")
     except JSONDecodeError:
-        pass
+        exception_handler.handle_JSON_decode_error()
     finally:
         file.close()
 
@@ -34,8 +36,8 @@ def mark_as_checked(data, element):
 
             file.close()
     except FileNotFoundError:
-        pass
-    except json.JSONDecodeError:
-        pass
+        exception_handler.handle_file_not_found_error("game_settings.json")
+    except JSONDecodeError:
+        exception_handler.handle_JSON_decode_error()
     finally:
         file.close()
