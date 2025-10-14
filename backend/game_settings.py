@@ -1,5 +1,7 @@
 import json
 
+import game_status
+
 from json import JSONDecodeError
 
 def read_settings():
@@ -21,6 +23,9 @@ def mark_as_checked(data, element):
                 data[str(index + 1)]['checked'] = False
 
             data[element]['checked'] = True
+
+            game_status.current_settings['size'] = data[element]['size']
+            game_status.current_settings['end_value'] = data[element]['end_val']
 
             file.seek(0)
             file.truncate()
