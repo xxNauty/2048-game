@@ -1,36 +1,30 @@
 from backend import logic
 
-gameboard_size = 0
-
-def set_size(size):
-    global gameboard_size
-    gameboard_size = size
-
-def move_left(grid):
-    new_grid, changed1 = logic.compress(grid, gameboard_size)
-    new_grid, changed2 = logic.merge(new_grid, gameboard_size)
+def move_left(game_board):
+    new_game_board, changed1 = logic.compress(game_board)
+    new_game_board, changed2 = logic.merge(new_game_board)
     changed = changed1 or changed2
-    new_grid, temp = logic.compress(new_grid, gameboard_size)
+    new_game_board, temp = logic.compress(new_game_board)
 
-    return new_grid, changed
+    return new_game_board, changed
 
-def move_right(grid):
-    new_grid = logic.reverse(grid, gameboard_size)
-    new_grid, changed = move_left(new_grid)
-    new_grid = logic.reverse(new_grid, gameboard_size)
+def move_right(game_board):
+    new_game_board = logic.reverse(game_board)
+    new_game_board, changed = move_left(new_game_board)
+    new_game_board = logic.reverse(new_game_board)
 
-    return new_grid, changed
+    return new_game_board, changed
 
-def move_up(grid):
-    new_grid = logic.transpose(grid, gameboard_size)
-    new_grid, changed = move_left(new_grid)
-    new_grid = logic.transpose(new_grid, gameboard_size)
+def move_up(game_board):
+    new_game_board = logic.transpose(game_board)
+    new_game_board, changed = move_left(new_game_board)
+    new_game_board = logic.transpose(new_game_board)
 
-    return new_grid, changed
+    return new_game_board, changed
 
-def move_down(grid):
-    new_grid = logic.transpose(grid, gameboard_size)
-    new_grid, changed = move_right(new_grid)
-    new_grid = logic.transpose(new_grid, gameboard_size)
+def move_down(game_board):
+    new_game_board = logic.transpose(game_board)
+    new_game_board, changed = move_right(new_game_board)
+    new_game_board = logic.transpose(new_game_board)
 
-    return new_grid, changed
+    return new_game_board, changed
