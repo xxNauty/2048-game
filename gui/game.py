@@ -76,20 +76,28 @@ class Game(tk.Frame):
         key = event.keysym
 
         if key in ["Up", "w", "W"]:
-            game_status.moves_count['up'] += 1
+            temp_board = self.game_board
             self.game_board, moved = moves.move_up(self.game_board)
+            if self.game_board != temp_board:
+                game_status.moves_count['up'] += 1
 
         elif key in ["Down", "s", "S"]:
-            game_status.moves_count['down'] += 1
+            temp_board = self.game_board
             self.game_board, moved = moves.move_down(self.game_board)
+            if self.game_board != temp_board:
+                game_status.moves_count['down'] += 1
 
         elif key in ["Left", "a", "A"]:
-            game_status.moves_count['left'] += 1
+            temp_board = self.game_board
             self.game_board, moved = moves.move_left(self.game_board)
+            if self.game_board != temp_board:
+                game_status.moves_count['left'] += 1
 
         elif key in ["Right", "d", "D"]:
-            game_status.moves_count['right'] += 1
+            temp_board = self.game_board
             self.game_board, moved = moves.move_right(self.game_board)
+            if self.game_board != temp_board:
+                game_status.moves_count['right'] += 1
 
         else:
             return
@@ -164,7 +172,6 @@ class Game(tk.Frame):
 
     @staticmethod
     def after_game_statistics(filename, parent_window):
-        print(filename)
         data = game_history.get_details(filename)
 
         parent_window.iconify()
