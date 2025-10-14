@@ -1,12 +1,10 @@
 import json
 import sys
 import tkinter as tk
-from json import JSONDecodeError
 
 import game_status
 
 from backend import logic, moves, state, game_history, common
-from gui import exception_handler
 
 COLORS = {
     0: ("#cdc1b4", "#776e65"),
@@ -164,42 +162,40 @@ class Game(tk.Frame):
         view_details_button.pack()
         end_game_window.protocol("WM_DELETE_WINDOW", lambda: sys.exit())
 
-    def after_game_statistics(self, filename, parent_window):
-        try:
-            with open(filename, "r") as file:
-                data = file.read()
-                data = json.loads(data)
+    @staticmethod
+    def after_game_statistics(filename, parent_window):
+        print(filename)
+        data = game_history.get_details(filename)
 
-                parent_window.iconify()
+        parent_window.iconify()
 
-                after_game_statistics_window = tk.Toplevel()
-                after_game_statistics_window.title("Details of the game")
-                after_game_statistics_window.geometry(common.get_geometry(after_game_statistics_window, 440, 600))
+        after_game_statistics_window = tk.Toplevel()
+        after_game_statistics_window.title("Details of the game")
+        after_game_statistics_window.geometry(common.get_geometry(after_game_statistics_window, 440, 600))
 
-                title_label = tk.Label(
-                    master=after_game_statistics_window,
-                    text="Details of the game",
-                    font=("Verdana", 16, "normal"),
-                    justify="center"
-                )
-                title_label.pack()
+        title_label = tk.Label(
+            master=after_game_statistics_window,
+            text="Details of the game",
+            font=("Verdana", 16, "normal"),
+            justify="center"
+        )
+        title_label.pack()
 
-                details_widget = tk.Frame(
-                    master=after_game_statistics_window,
-                    width=440,
-                    height=440,
-                )
-                details_widget.pack(pady=10)
+        details_widget = tk.Frame(
+            master=after_game_statistics_window,
+            width=440,
+            height=440,
+        )
+        details_widget.pack(pady=10)
 
-                for i, (k, v) in enumerate(data.items()):
-                    data_key = k.replace("_", " ").capitalize()
-                    tk.Label(details_widget, text=data_key, font=("Verdana", 15, "bold"), borderwidth=2, relief="solid", width=14).grid(row=i, column=0, sticky='w')
-                    tk.Label(details_widget, text=v, font=("Verdana", 15, "normal"), borderwidth=2, relief="solid", width=16).grid(row=i, column=1, sticky='w')
+        for i, (k, v) in enumerate(data.items()):
+            data_key = k.replace("_", " ").capitalize()
+            tk.Label(details_widget, text=data_key, font=("Verdana", 15, "bold"), borderwidth=2, relief="solid",
+                     width=14).grid(row=i, column=0, sticky='w')
+            tk.Label(details_widget, text=v, font=("Verdana", 15, "normal"), borderwidth=2, relief="solid",
+                     width=16).grid(row=i, column=1, sticky='w')
 
-                after_game_statistics_window.protocol("WM_DELETE_WINDOW",  lambda: common.unhide_previous_window(parent_window, after_game_statistics_window))
-        except FileNotFoundError:
-            exception_handler.handle_file_not_found_error(filename)
-        except JSONDecodeError:
-            exception_handler.handle_JSON_decode_error()
-        finally:
-            file.close()
+        after_game_statistics_window.protocol(
+            "WM_DELETE_WINDOW",
+            lambda: common.unhide_previous_window(parent_window, after_game_statistics_window)
+        )

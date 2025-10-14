@@ -39,7 +39,7 @@ def generate_report(game_settings, count_up, count_down, count_left, count_right
         json.dump(data, file, indent=4)
         file.close()
 
-    return new_records, file_name
+    return new_records, date_of_game.strftime(os.getenv("DATE_FORMAT_FOR_FILENAMES")) + ".json"
 
 def remove_old_reports():
     files = [file for file in os.listdir(GAME_HISTORY_PATH) if os.path.isfile(os.path.join(GAME_HISTORY_PATH, file)) and file not in ["example.json", "records.json", ".gitignore"]]
@@ -60,10 +60,9 @@ def get_details(file_name):
     try:
         with open(GAME_HISTORY_PATH + file_name) as file:
             data = json.loads(file.read())
+            file.close()
             return data
     except FileNotFoundError:
         exception_handler.handle_file_not_found_error(file_name)
     except JSONDecodeError:
         exception_handler.handle_JSON_decode_error()
-    finally:
-        file.close()
