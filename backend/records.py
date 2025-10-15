@@ -106,7 +106,7 @@ def update_records(game_identifier, game_settings, count_up, count_down, count_l
 
 def read_records(file_name):
     try:
-        with open("records/" + file_name + ".json") as file:
+        with open(os.getenv("RECORDS_PATH") + file_name + ".json") as file:
             record_details = json.loads(file.read())
             return record_details
     except FileNotFoundError:
