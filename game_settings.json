@@ -2,7 +2,7 @@
     "1": {
         "size": 3,
         "end_val": 128,
-        "checked": false
+        "checked": true
     },
     "2": {
         "size": 4,
@@ -22,6 +22,6 @@
     "5": {
         "size": 6,
         "end_val": 4096,
-        "checked": true
+        "checked": false
     }
 }
