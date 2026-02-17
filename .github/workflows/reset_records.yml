@@ -1,4 +1,4 @@
-name: Reset records on every pull request
+name: Reset records on every pull request.
 
 on:
   pull_request_target:

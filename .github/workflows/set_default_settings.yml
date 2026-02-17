@@ -1,4 +1,4 @@
-name: Set default settings on every pull request
+name: Set default settings on every pull request.
 
 on:
   pull_request_target:
