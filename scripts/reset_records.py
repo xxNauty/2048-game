@@ -7,11 +7,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-script_path = Path("records")
-directory = script_path.parent
+script_path = Path("records/")
 
 def reset():
-    for file in directory.iterdir():
+    for file in script_path.iterdir():
         if file.is_file() and file != script_path:
             with open(file, 'r+') as file_data:
                 content = file_data.read()
