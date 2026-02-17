@@ -1,33 +1,33 @@
 {
-    "last_update": "17.02.2026 11:48",
+    "last_update": "17.02.2026 10:58",
     "moves_up": {
-        "record": 35,
-        "last_update": "17.02.2026 11:48",
-        "updated_by": "21918fb5-"
+        "record": 999,
+        "last_update": "17.02.2026 10:58",
+        "updated_by": "record not set"
     },
     "moves_down": {
-        "record": 69,
-        "last_update": "17.02.2026 11:48",
-        "updated_by": "21918fb5-"
+        "record": 999,
+        "last_update": "17.02.2026 10:58",
+        "updated_by": "record not set"
     },
     "moves_left": {
-        "record": 55,
-        "last_update": "17.02.2026 11:48",
-        "updated_by": "21918fb5-"
+        "record": 999,
+        "last_update": "17.02.2026 10:58",
+        "updated_by": "record not set"
     },
     "moves_right": {
-        "record": 60,
-        "last_update": "17.02.2026 11:48",
-        "updated_by": "21918fb5-"
+        "record": 999,
+        "last_update": "17.02.2026 10:58",
+        "updated_by": "record not set"
     },
     "total_moves": {
-        "record": 219,
-        "last_update": "17.02.2026 11:48",
-        "updated_by": "21918fb5-"
+        "record": 3996,
+        "last_update": "17.02.2026 10:58",
+        "updated_by": "record not set"
     },
     "max_value_on_gameboard": {
-        "record": 256,
-        "last_update": "17.02.2026 11:48",
-        "updated_by": "21918fb5-"
+        "record": 0,
+        "last_update": "17.02.2026 10:58",
+        "updated_by": "record not set"
     }
 }
