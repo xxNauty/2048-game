@@ -1,6 +1,6 @@
 current_settings = {
-    'size': 4,
-    'end_value': 64
+    'size': 0,
+    'end_value': 0
 }
 
 moves_count = {
