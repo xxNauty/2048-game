@@ -18,13 +18,13 @@ A Python implementation of the popular 2048 puzzle game, featuring a simple GUI 
 
 ## Screenshots
 
-![img.png](for_readme/main_menu.png)\
+![img.png](images/readme_main_menu.png)\
 *Main menu of the game*
 
-![img.png](for_readme/gameboard_1.png)\
+![img.png](images/readme_gameboard_1.png)\
 *The gameboard of the easiest level*
 
-![img.png](for_readme/gameboard_5.png)\
+![img.png](images/readme_gameboard_5.png)\
 *The gameboard of the hardest level*
 
 ## Getting Started
@@ -63,10 +63,10 @@ brew install python-tk
 
 ## How to Play
 
-- **Use arrow keys** (**or WSAD**) to move the[]() tiles.
-- When two tiles with the same number touch, they merge into one.
-- Try to reach the 2048 (or other value which ends the game) tile!
-- The game ends when no moves are possible.
+- **Use arrow keys** (or **W S A D**) to move the tiles.
+- When two tiles with the same number touch, they merge into one with the value of their sum.
+- The game goal is to reach the tile with required number (which for default settings is **2048**).
+- The game fails if there is no room for any move before reaching required value.
 
 ## Project Structure
 
@@ -79,15 +79,6 @@ brew install python-tk
 └── main.py             # the main file of the game
 ```
 
-
-## Contributing
-
-Pull requests are welcome! If you find a bug or have a feature request, feel free to open an issue or submit a PR.
-
 ## License
 
 This project is licensed under the "Unlicensed license".
-
----
-
-**Enjoy playing 2048 in Python!**
