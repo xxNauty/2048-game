@@ -1,4 +1,4 @@
-name: Reset records on every pull request.
+name: Reset records and set default settings on every pull request.
 
 on:
   pull_request_target:
@@ -28,10 +28,13 @@ jobs:
     - name: Run reset_records.py
       run: python scripts/reset_records.py
 
+    - name: Run set_default_settings.py
+      run: python scripts/set_default_settings.py
+
     - name: Commit and push changes
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "records-manager[bot]"
+        git config --global user.name "github-actions[bot]"
         git add .
-        git commit -m "Records reset" || echo "No changes to commit"
+        git commit -m "Records reset and default settings set" || echo "No changes to commit"
         git push origin HEAD:${{ github.event.pull_request.head.ref }}
