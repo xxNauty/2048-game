@@ -1,26 +1,28 @@
+import os
 import json
 
 import game_status
 
+from dotenv import load_dotenv
 from json import JSONDecodeError
 from gui import exception_handler
+
+load_dotenv()
 
 
 def read_settings():
     try:
-        with open("game_settings.json", "r") as file:
+        with open(os.getenv("GAME_SETTINGS_PATH"), "r") as file:
             data = json.loads(file.read())
             return data
     except FileNotFoundError:
-        exception_handler.handle_file_not_found_error("game_settings.json")
+        exception_handler.handle_file_not_found_error(os.getenv("GAME_SETTINGS_PATH"))
     except JSONDecodeError:
         exception_handler.handle_JSON_decode_error()
-    finally:
-        file.close()
 
 def mark_as_checked(data, element):
     try:
-        with open("game_settings.json", "w") as file:
+        with open(os.getenv("GAME_SETTINGS_PATH"), "w") as file:
             for index in range(len(data)):
                 data[str(index + 1)]['checked'] = False
 
@@ -34,10 +36,7 @@ def mark_as_checked(data, element):
 
             json.dump(data, file, indent=4)
 
-            file.close()
     except FileNotFoundError:
-        exception_handler.handle_file_not_found_error("game_settings.json")
+        exception_handler.handle_file_not_found_error(os.getenv("GAME_SETTINGS_PATH"))
     except JSONDecodeError:
         exception_handler.handle_JSON_decode_error()
-    finally:
-        file.close()

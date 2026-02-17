@@ -19,9 +19,9 @@ def _handle(error_message):
     )
     title.pack(pady=10)
 
-    explaination = tk.Label(
+    explanation = tk.Label(
         error_window,
         text=error_message,
         font=("Verdana", 12, "normal"),
     )
-    explaination.pack(pady=10)
+    explanation.pack(pady=10)
