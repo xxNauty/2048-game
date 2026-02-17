@@ -11,6 +11,7 @@ load_dotenv()
 def update_records(game_identifier, game_settings, count_up, count_down, count_left, count_right, max_value_on_gameboard):
     total_moves = count_up + count_down + count_left + count_right
     current_date = datetime.now().strftime(os.getenv("DATE_FORMAT_NORMAL"))
+
     updated = []
     try:
         with open(os.getenv("RECORDS_PATH") + f"{game_settings[0]}_{game_settings[1]}.json", "r+") as file:
@@ -99,8 +100,6 @@ def update_records(game_identifier, game_settings, count_up, count_down, count_l
         exception_handler.handle_file_not_found_error(f"{game_settings[0]}_{game_settings[1]}.json")
     except JSONDecodeError:
         exception_handler.handle_JSON_decode_error()
-    finally:
-        file.close()
 
     return updated
 
@@ -113,5 +112,3 @@ def read_records(file_name):
         exception_handler.handle_file_not_found_error(file_name + ".json")
     except JSONDecodeError:
         exception_handler.handle_JSON_decode_error()
-    finally:
-        file.close()

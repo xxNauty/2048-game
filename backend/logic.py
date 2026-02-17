@@ -16,7 +16,12 @@ def find_empty(game_board):
     return None, None
 
 def add_new_2(game_board):
-    empty_positions = [(i, j) for i in range(game_status.current_settings['size']) for j in range(game_status.current_settings['size']) if game_board[i][j] == 0]
+    empty_positions = [
+        (i, j)
+        for i in range(game_status.current_settings['size'])
+        for j in range(game_status.current_settings['size'])
+        if game_board[i][j] == 0
+    ]
     if not empty_positions:
         return
     r, c = random.choice(empty_positions)

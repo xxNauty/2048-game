@@ -97,6 +97,7 @@ class GameRecords(tk.Frame):
             ).grid(row=idx, column=3, sticky="w")
 
         self.master.iconify()
+
         records_details_window.protocol(
             "WM_DELETE_WINDOW",
             lambda: common.unhide_previous_window(self.master, records_details_window)

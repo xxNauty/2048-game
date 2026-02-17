@@ -26,7 +26,9 @@ class GameHistory(tk.Frame):
         )
         header_label.pack(pady=5)
 
-        games_widget = tk.Frame(master=self)
+        games_widget = tk.Frame(
+            master=self
+        )
         games_widget.pack(pady=5)
 
         files = game_history.read_history_files()

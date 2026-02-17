@@ -1,4 +1,3 @@
-import json
 import sys
 import tkinter as tk
 
@@ -109,7 +108,10 @@ class Game(tk.Frame):
 
         if status != "GAME NOT OVER":
             new_records, output_file_name = game_history.generate_report(
-                (game_status.current_settings['size'], game_status.current_settings['end_value']),
+                (
+                    game_status.current_settings['size'],
+                    game_status.current_settings['end_value']
+                ),
                 game_status.moves_count['up'],
                 game_status.moves_count['down'],
                 game_status.moves_count['left'],
@@ -195,12 +197,25 @@ class Game(tk.Frame):
         )
         details_widget.pack(pady=10)
 
-        for i, (k, v) in enumerate(data.items()):
+        for i, (k, v) in enumerate(data.items()): # i -> number of element, k -> key from dict, v -> value
             data_key = k.replace("_", " ").capitalize()
-            tk.Label(details_widget, text=data_key, font=("Verdana", 15, "bold"), borderwidth=2, relief="solid",
-                     width=14).grid(row=i, column=0, sticky='w')
-            tk.Label(details_widget, text=v, font=("Verdana", 15, "normal"), borderwidth=2, relief="solid",
-                     width=16).grid(row=i, column=1, sticky='w')
+            tk.Label(
+                details_widget,
+                text=data_key,
+                font=("Verdana", 15, "bold"),
+                borderwidth=2,
+                relief="solid",
+                width=14
+            ).grid(row=i, column=0, sticky='w')
+
+            tk.Label(
+                details_widget,
+                text=v,
+                font=("Verdana", 15, "normal"),
+                borderwidth=2,
+                relief="solid",
+                width=16
+            ).grid(row=i, column=1, sticky='w')
 
         after_game_statistics_window.protocol(
             "WM_DELETE_WINDOW",
