@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-script_path = Path(__file__).resolve()
+script_path = Path("records")
 directory = script_path.parent
 
 def reset():
