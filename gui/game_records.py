@@ -62,12 +62,42 @@ class GameRecords(tk.Frame):
             ).grid(row=2, column=i, padx=8, sticky="w")
 
         rows = [
-            ("Moves Up", record_details["moves_up"]),
-            ("Moves Down", record_details["moves_down"]),
-            ("Moves Left", record_details["moves_left"]),
-            ("Moves Right", record_details["moves_right"]),
-            ("Total Moves", record_details["total_moves"]),
-            ("Max Value on Gameboard", record_details["max_value_on_gameboard"])
+            (
+                "Moves Up",
+                record_details["moves_up"]
+                    if record_details['moves_up']['updated_by'] != "record not set"
+                    else {"record": "", "last_update": "Record not set", "updated_by": ""}
+            ),
+            (
+                "Moves Down",
+                record_details["moves_down"]
+                    if record_details['moves_down']['updated_by'] != "record not set"
+                    else {"record": "", "last_update": "Record not set", "updated_by": ""}
+            ),
+            (
+                "Moves Left",
+                record_details["moves_left"]
+                    if record_details['moves_left']['updated_by'] != "record not set"
+                    else {"record": "", "last_update": "Record not set", "updated_by": ""}
+            ),
+            (
+                "Moves Right",
+                record_details["moves_right"]
+                    if record_details['moves_right']['updated_by'] != "record not set"
+                    else {"record": "", "last_update": "Record not set", "updated_by": ""}
+            ),
+            (
+                "Total Moves",
+                record_details["total_moves"]
+                    if record_details['total_moves']['updated_by'] != "record not set"
+                    else {"record": "", "last_update": "Record not set", "updated_by": ""}
+            ),
+            (
+                "Max Value on Gameboard",
+                record_details["max_value_on_gameboard"]
+                    if record_details['max_value_on_gameboard']['updated_by'] != "record not set"
+                    else {"record": "", "last_update": "Record not set", "updated_by": ""}
+            )
         ]
 
         for idx, (label, stats) in enumerate(rows, start=3):
