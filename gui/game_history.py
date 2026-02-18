@@ -36,7 +36,7 @@ class GameHistory(tk.Frame):
         if not files:
             no_games_label = tk.Label(
                 master=games_widget,
-                text="No game history available.",
+                text="There is nothing to show here.",
                 justify="center",
                 font=("Verdana", 16, "normal")
             )
@@ -47,7 +47,7 @@ class GameHistory(tk.Frame):
             game_button = tk.Button(
                 master=games_widget,
                 text=datetime.strptime(
-                    file[:-5],
+                    file[:-9],
                     os.getenv("DATE_FORMAT_FOR_FILENAMES")
                 ).strftime(os.getenv("DATE_FORMAT_NORMAL")),
                 justify="center",
