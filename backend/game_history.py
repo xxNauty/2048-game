@@ -22,7 +22,7 @@ def generate_report(game_settings, count_up, count_down, count_left, count_right
 
     data = {
         "game_identifier": game_identifier,
-        "size of gameboard": f"{game_settings[0]}x{game_settings[0]}",
+        "gameboard_size": f"{game_settings[0]}x{game_settings[0]}",
         "date_of_game": date_of_game.strftime(os.getenv("DATE_FORMAT_NORMAL")),
         "total_moves": total_moves,
         "left_moves": count_left,
