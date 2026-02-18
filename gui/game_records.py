@@ -3,7 +3,7 @@ import tkinter as tk
 from backend import records, common
 
 LEVELS = [
-        ("(3x3->64)   ", "3_64"),
+        ("(3x3->64)   ", "3_128"),
         ("(4x4->1024)", "4_1024"),
         ("(4x4->2048)", "4_2048"),
         ("(5x5->2048)", "5_2048"),

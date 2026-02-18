@@ -13,7 +13,7 @@ load_dotenv()
 def read_settings():
     try:
         with open(os.getenv("GAME_SETTINGS_PATH"), "r") as file:
-            data = json.loads(file.read())
+            data = json.load(file)
             return data
     except FileNotFoundError:
         exception_handler.handle_file_not_found_error(os.getenv("GAME_SETTINGS_PATH"))
